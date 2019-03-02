@@ -6,11 +6,13 @@
           <v-toolbar-title>Register</v-toolbar-title>
         </v-toolbar>
         <div class="pl-4 pr-4 pt-2 pb-2">
-          <v-text-field type="email" name="email" v-model="email" label="Email" required/>
+          <form action="" autocomplete="off">
+          <v-text-field type="email" name="email" v-model="email" label="Email" autocomplete="new-password" required/>
           <v-text-field type="password" name="password" v-model="password" label="Password" required/>
           <div v-html="error" class="error"/>
             <br>
           <v-btn dark class="cyan" @click="register">Register</v-btn>
+          </form>
         </div>
       </div>
     </v-flex>
