@@ -4,7 +4,7 @@ export default {
   getAllPosts () {
     return Api().get('songs')
   },
-  post () {
-    return Api().post('song')
+  createPost (song) {
+    return Api().post('songs', song)
   }
 }

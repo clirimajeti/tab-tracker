@@ -42,7 +42,6 @@ module.exports = {
                     error:"Login information is wrong"
                 })
             }
-            console.log(user.toJSON());
             const isPasswordValid = await user.comparePassword(password);
             if(!isPasswordValid){
                 return res.status(403).send({
