@@ -51,6 +51,7 @@ export default {
 
 <style scoped>
 .error{
-  color:red;
+  color:#f4f4f4;
+  
 }
 </style>

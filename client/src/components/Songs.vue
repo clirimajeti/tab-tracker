@@ -17,8 +17,9 @@
               <div class="song-album">
                 {{song.album}} - {{song.genre}}
               </div>
-              <v-btn dark class="cyan" router :to="{name: 'song', params: {songId: song.id}}"
-            >View Song</v-btn>
+              <v-btn dark class="cyan"
+                router :to="{name: 'song', params: {songId: song.id}}">
+                View Song</v-btn>
             </v-flex>
 
             <v-flex xs6>
