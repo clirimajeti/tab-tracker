@@ -6,7 +6,7 @@
           <form action="" autocomplete="off">
           <v-text-field type="email" name="email" v-model="email" label="Email" autocomplete="new-password" required/>
           <v-text-field type="password" name="password" v-model="password" label="Password" required/>
-          <div v-html="error" class="error"/>
+          <div v-html="error" class="danger-alert"/>
             <br>
           <v-btn dark class="cyan" @click="register">Register</v-btn>
           </form>
@@ -35,7 +35,8 @@ export default {
         password: this.password 
       })
       this.$store.dispatch('setToken', response.data.token)
-      this.$store.dispatch('setUser', response.data.user)     
+      this.$store.dispatch('setUser', response.data.user)
+      this.$router.push({name:"songs"})     
       } catch (error) {
         this.error = error.response.data.error
       } 
@@ -52,7 +53,7 @@ export default {
 </script>
 
 <style scoped>
-.error{
-  color:white;
+.danger-alert{
+  color:crimson;
 }
 </style>

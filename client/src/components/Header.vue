@@ -10,13 +10,13 @@
     </v-toolbar-items>
     <v-spacer></v-spacer>
     <v-toolbar-items>
-      <v-btn flat dark router to="/login" v-if="!$store.state.isUserLoggedIn">
+      <v-btn flat dark router :to="{name:'login'}" v-if="!$store.state.isUserLoggedIn">
         Login
       </v-btn>
-      <v-btn flat dark router to="/register" v-if="!$store.state.isUserLoggedIn">
+      <v-btn flat dark router :to="{name:'register'}" v-if="!$store.state.isUserLoggedIn">
         Sign Up
       </v-btn>
-      <v-btn flat dark router to="/" @click="logout" v-if="$store.state.isUserLoggedIn">
+      <v-btn flat dark router :to="{name:'songs'}" @click="logout" v-if="$store.state.isUserLoggedIn">
         Log out
       </v-btn>
     </v-toolbar-items>

@@ -1,6 +1,4 @@
 <template>
- <v-layout row>
-    <v-flex xs6 offset-xs3>
       <panel  title="Songs">               
         <v-btn fab class="cyan lighten-1" dark small absolute right middle slot="action" router to="/songs/create">
           <v-icon>add</v-icon>
@@ -28,8 +26,7 @@
           </v-layout>
         </div>
       </panel>
-    </v-flex>
-  </v-layout>
+
 </template>
 
 <script>
@@ -37,17 +34,21 @@ import SongsService from '@/services/SongsService'
 import Panel from '@/components/Panel'
 export default {
   components: {
-    Panel
+    Panel,
+    
   },
   data () {
     return {
       songs: null,
     }
   },
-  methods:{
-  },
- async mounted() {
-    this.songs = (await SongsService.getAllPosts()).data
+  watch:{
+    '$route.query.search': {
+          immediate: true,
+          async handler (value) {
+               this.songs = (await SongsService.getAllPosts(value)).data
+           }
+    }
   }
 }
 
