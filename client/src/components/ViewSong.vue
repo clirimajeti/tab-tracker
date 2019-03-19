@@ -8,6 +8,18 @@
                   <v-img :src="song.albumImageUrl" max-width="100%"></v-img>
                   <v-btn dark class="cyan" small router :to="{name: 'song-edit', params: {songId: song.id}}">Edit Song</v-btn>
 
+                  <v-btn  dark class="cyan" small 
+                          @click="setBookmark"
+                          v-if="isUserLoggedIn && !bookmark">
+                          Bookmark
+                          <v-icon dark >bookmark_border</v-icon>
+                  </v-btn>
+                  <v-btn  dark class="cyan" small 
+                          @click="unsetBookmark"
+                           v-if="isUserLoggedIn && bookmark">
+                          Unbookmark
+                          <v-icon dark >bookmark</v-icon>
+                  </v-btn>
                   <v-card-title class="justify-center" >
                       <div>
                         <div class="song-title">{{song.title}}</div>
@@ -28,20 +40,83 @@
 </template>
 <script>
 import SongsService from '@/services/SongsService'
+import BookmarkService from '@/services/BookmarkService'
+import SongsHistoryService from '@/services/SongsHistoryService'
 import Panel from '@/components/Panel'
+import {mapState} from 'vuex'
+
 export default {
     components: {
         Panel
     },
     data() {
         return {
-            song:{}
+            song:{},
+            bookmark: null
         }
     },
+    computed:{
+      ...mapState([
+        'isUserLoggedIn',
+        'user',
+        'route'
+      ])
+    },
+    watch: {
+      async song () {
+        if(!this.isUserLoggedIn){
+          return;
+        }
+        try {
+        const bookmarks = (await BookmarkService.getBookmarks({
+          songId: this.route.params.songId,
+          userId: this.user.id
+        })).data
+        if(bookmarks.length) {
+          this.bookmark = bookmarks[0]
+        }
+        } catch (error) {
+        console.log(error)
+        }
+      }
+    },
     async mounted() {
-        const songId = this.$store.state.route.params.songId;
+      try {
+        const songId = this.route.params.songId;
+        console.log(songId)
         this.song = (await SongsService.show(songId)).data
-        },
+        if(this.isUserLoggedIn){
+          SongsHistoryService.postHistory({
+            SongId: songId,
+            UserId: this.user.id
+          })
+        }
+        
+      } catch (error) {
+        console.log(error)
+      }
+
+    },
+    methods: {
+      async setBookmark () {
+        try {
+          this.bookmark = (await BookmarkService.postBookmarks({
+          songId: this.song.id,
+          userId: this.user.id
+        })).data
+        } catch (error) {
+          console.log(error)
+        } 
+      },
+      async unsetBookmark () {
+         try {
+          await BookmarkService.deleteBookmarks(this.bookmark.bookmarkId)
+          this.bookmark = null;
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    },
     
 }
 </script>

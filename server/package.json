@@ -4,7 +4,8 @@
   "description": "server side",
   "scripts": {
     "start": "nodemon src/app.js",
-    "lint": "eslint src/**/*.js"
+    "lint": "eslint src/**/*.js",
+    "seed": "node ./seed"
   },
   "author": "Clirim Ajeti",
   "license": "ISC",
