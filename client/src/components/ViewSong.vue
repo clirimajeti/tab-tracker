@@ -70,7 +70,6 @@ export default {
         try {
         const bookmarks = (await BookmarkService.getBookmarks({
           songId: this.route.params.songId,
-          userId: this.user.id
         })).data
         if(bookmarks.length) {
           this.bookmark = bookmarks[0]
@@ -83,7 +82,6 @@ export default {
     async mounted() {
       try {
         const songId = this.route.params.songId;
-        console.log(songId)
         this.song = (await SongsService.show(songId)).data
         if(this.isUserLoggedIn){
           SongsHistoryService.postHistory({
@@ -101,8 +99,7 @@ export default {
       async setBookmark () {
         try {
           this.bookmark = (await BookmarkService.postBookmarks({
-          songId: this.song.id,
-          userId: this.user.id
+          songId: this.song.id
         })).data
         } catch (error) {
           console.log(error)

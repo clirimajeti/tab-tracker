@@ -30,18 +30,12 @@ module.exports = {
     async postHistory (req, res) {
         try{
             let songId = req.body.params.SongId
-            let userId = req.body.params.UserId
-            console.log(songId, "SONG ID SONG ID SONG ID ")  
-            console.log(userId, "USERUSER USER USER USER") 
-            console.log(songId, "SONG ID SONG ID SONG ID ")  
-            console.log(userId, "USERUSER USER USER USER")       
-            console.log(songId, "SONG ID SONG ID SONG ID ")  
-            console.log(userId, "USERUSER USER USER USER")   
+            let userId = req.body.params.UserId 
             const history = await History.create({
                 SongId: songId,
                 UserId: userId
             })
-            res.send(history)
+            res.send(_.uniqBy(history, h => h.SongId))
         } catch (err) {
             res.status('500').send({
                 error: 'An error has occured trying to create the history object'

@@ -1,5 +1,5 @@
 <template>
-  <panel title="Bookmarks">
+  <panel title="Bookmarks" v-if="isUserLoggedIn">
     <v-data-table
       :headers="headers"
       :pagination.sync="pagination"

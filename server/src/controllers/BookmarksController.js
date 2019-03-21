@@ -1,10 +1,15 @@
-const {Bookmark, Song} = require('../models')
+const {
+    Bookmark, 
+    Song, 
+    User
+} = require('../models')
 const _ = require('lodash')
 
 module.exports = {
     async getBookmark (req, res) {
         try{
-            const {songId, userId} = req.query;
+            const userId = req.user.id
+            const {songId} = req.query;
             const where = {
                 UserId: userId
             }
@@ -32,7 +37,7 @@ module.exports = {
     async postBookmark (req, res) {
         try{
             const songId = req.body.params.songId
-            const userId = req.body.params.userId
+            const userId = req.user.id
             const bookmark = await Bookmark.findOne({
                 where: {
                     SongId: songId,
@@ -59,8 +64,19 @@ module.exports = {
     },
     async deleteBookmark (req, res) {
         try{
+            const userId = req.user.id
             const {bookmarkId} = req.params;
-            const bookmark = await Bookmark.findByPk(bookmarkId)
+            const bookmark = await Bookmark.findOne({
+                where: {
+                    id: bookmarkId,
+                    UserId: userId
+                }
+            })
+            if (!bookmark){
+                res.status(403).send({
+                    error: "You dont have access to this resource"
+                })
+            }
             await bookmark.destroy()
             res.send(bookmark)
         } catch (err) {

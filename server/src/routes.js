@@ -3,6 +3,7 @@ const AuthenticationControllerPolicy = require('./policies/AuthenticationControl
 const SongsController = require('./controllers/SongsController')
 const BookmarksController = require('./controllers/BookmarksController')
 const SongsHistoryController = require('./controllers/SongsHistoryController')
+const isAuthenticated = require('./policies/isAuthenticated')
 
 module.exports = (app) => {
 
@@ -10,25 +11,40 @@ module.exports = (app) => {
       AuthenticationControllerPolicy.register,
       AuthenticationController.register
       )
-    app.post('/login',AuthenticationController.login)
+    app.post('/login',
+      AuthenticationController.login)
 
-    app.get('/songs',SongsController.getAllPosts)
+    app.get('/songs',
+      SongsController.getAllPosts)
 
-    app.get('/songs/:songId',SongsController.show)
+    app.get('/songs/:songId',
+      SongsController.show)
 
-    app.put('/songs/:songId', SongsController.putPost)  
+    app.put('/songs/:songId',
+      SongsController.putPost)  
 
-    app.post('/songs', SongsController.createPost)
+    app.post('/songs',
+      SongsController.createPost)
 
-    app.get('/bookmarks', BookmarksController.getBookmark)
+    app.get('/bookmarks',
+      isAuthenticated,
+      BookmarksController.getBookmark)
 
-    app.post('/bookmarks', BookmarksController.postBookmark)
+    app.post('/bookmarks',
+      isAuthenticated,
+      BookmarksController.postBookmark)
 
-    app.delete('/bookmarks/:bookmarkId', BookmarksController.deleteBookmark)
+    app.delete('/bookmarks/:bookmarkId',
+      isAuthenticated,
+      BookmarksController.deleteBookmark)
 
-    app.get('/history', SongsHistoryController.getHistory)
+    app.get('/history',
+      isAuthenticated,
+      SongsHistoryController.getHistory)
 
-    app.post('/history', SongsHistoryController.postHistory)
+    app.post('/history',
+      isAuthenticated,
+      SongsHistoryController.postHistory)
   
     }
 

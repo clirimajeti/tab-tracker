@@ -1,5 +1,5 @@
 <template>
-  <panel title="History">
+  <panel title="History" v-if="isUserLoggedIn">
     <v-data-table
       :headers="headers"
       :pagination.sync="pagination"
